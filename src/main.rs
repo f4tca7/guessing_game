@@ -1,40 +1,39 @@
-use std::io;
-use std::cmp::Ordering;
-use rand::Rng;
+
 
 fn main() {
-    println!("Guess the number!");
+    let n = 19;
+    let fib = n_th_fib(n);
+    println!("{n}th Fibonacci is {fib}");
+}
 
-    let secret_number: u32 = rand::thread_rng().gen_range(1..=100);
+fn f_to_c(f: f64 ) -> f64  {
+    let c = (f-32.0) * (5.0/9.0);
+    c
+}
 
-    println!("The secret number is: {secret_number}");
-    loop {
-
-        println!("Please input your guess.");
-
-        let mut guess = String::new();
-
-
-        io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line");
-
-        // guess = "45".to_string();
-
-        println!("You guessed: {guess}");
-
-        let guess: u32 = match guess.trim().parse() {
-            Ok(num) => num,
-            Err(_) => continue,
-        };
-
-        match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too small!"),
-            Ordering::Greater => println!("Too big!"),
-            Ordering::Equal => {
-                println!("You win!");
-                break;
-            }
-        }
+fn n_th_fib(n: u32) -> u32 {
+    let mut fib_min_1 = 1;
+    let mut fib_min_2 = 0;
+    let mut fib = 0;
+    let mut index = 0;
+    if n == 0 {
+        fib_min_2
     }
+    else if n == 1 {
+        fib_min_1
+    }
+    else {
+        while index < (n-1) {
+            fib = calc_fib(fib_min_1, fib_min_2);
+            fib_min_2 = fib_min_1;
+            fib_min_1 = fib;
+            index += 1;
+        }
+        fib
+    }
+}
+
+fn calc_fib(f_min_1: u32, f_min_2: u32) -> u32 {
+    let fib = f_min_1 + f_min_2;
+    fib
 }
